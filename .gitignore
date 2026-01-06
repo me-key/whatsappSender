@@ -1,0 +1,16 @@
+# All Gradle build directories (root + modules like app/build)
+**/build/
+
+# Gradle cache and state
+.gradle/
+
+# IntelliJ IDEA (optional, but common)
+.idea/
+*.iml
+
+# VS Code (optional)
+.vscode/
+
+# OS files
+.DS_Store
+

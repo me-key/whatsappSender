@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WhatsApp Sender</string>
+    <string name="send_button_label">Send via WhatsApp</string>
+    <string name="config_summary">Ready to send "%1$s" to %2$s</string>
+    <string name="config_error">Unable to read configuration.</string>
+    <string name="whatsapp_missing">WhatsApp is not installed.</string>
+    <string name="missing_config_data">Phone number or message missing in config.</string>
+</resources>
