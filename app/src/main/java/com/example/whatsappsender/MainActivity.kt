@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         messages.forEach { message ->
             val button = Button(this).apply {
-                text = "${message.label}\n(${message.phoneNumber})"
+                text = if (message.isGroup) "${message.label}\n(Group)" else "${message.label}\n(${message.phoneNumber})"
                 gravity = Gravity.CENTER
                 textSize = 16f
                 isAllCaps = false
@@ -63,26 +63,37 @@ class MainActivity : AppCompatActivity() {
                 }
                 
                 setOnClickListener {
-                    sendWhatsappMessage(message.phoneNumber, message.message)
+                    sendWhatsappMessage(message)
                 }
             }
             binding.messagesGrid.addView(button)
         }
     }
 
-    private fun sendWhatsappMessage(phoneNumber: String, messageText: String) {
-        if (phoneNumber.isBlank() || messageText.isBlank()) {
+    private fun sendWhatsappMessage(message: Message) {
+        if (message.message.isBlank()) {
             Toast.makeText(this, R.string.missing_config_data, Toast.LENGTH_SHORT).show()
             return
         }
 
-        val uri = Uri.parse("https://api.whatsapp.com/send").buildUpon()
-            .appendQueryParameter("phone", phoneNumber)
-            .appendQueryParameter("text", messageText)
-            .build()
-
-        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-            setPackage("com.whatsapp")
+        val intent = if (message.isGroup) {
+            Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message.message)
+                setPackage("com.whatsapp")
+            }
+        } else {
+            if (message.phoneNumber.isBlank()) {
+                Toast.makeText(this, R.string.missing_config_data, Toast.LENGTH_SHORT).show()
+                return
+            }
+            val uri = Uri.parse("https://api.whatsapp.com/send").buildUpon()
+                .appendQueryParameter("phone", message.phoneNumber)
+                .appendQueryParameter("text", message.message)
+                .build()
+            Intent(Intent.ACTION_VIEW, uri).apply {
+                setPackage("com.whatsapp")
+            }
         }
 
         try {

@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:hint="Label (e.g. Mom)" />
 
+    <CheckBox
+        android:id="@+id/isGroupCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send to Group (Select manually)" />
+
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="match_parent"

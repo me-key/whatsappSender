@@ -43,6 +43,17 @@ class ManageMessagesActivity : AppCompatActivity() {
         val labelInput = dialogView.findViewById<EditText>(R.id.labelInput)
         val phoneInput = dialogView.findViewById<EditText>(R.id.phoneInput)
         val messageInput = dialogView.findViewById<EditText>(R.id.messageInput)
+        val isGroupCheckbox = dialogView.findViewById<android.widget.CheckBox>(R.id.isGroupCheckbox)
+
+        isGroupCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            phoneInput.isEnabled = !isChecked
+            if (isChecked) {
+                phoneInput.text.clear()
+                phoneInput.hint = "N/A for Group"
+            } else {
+                phoneInput.hint = "Phone Number (e.g. +1...)"
+            }
+        }
 
         AlertDialog.Builder(this)
             .setTitle("Add Message")
@@ -51,12 +62,14 @@ class ManageMessagesActivity : AppCompatActivity() {
                 val label = labelInput.text.toString()
                 val phone = phoneInput.text.toString()
                 val message = messageInput.text.toString()
+                val isGroup = isGroupCheckbox.isChecked
 
-                if (label.isNotBlank() && phone.isNotBlank() && message.isNotBlank()) {
+                if (label.isNotBlank() && message.isNotBlank() && (isGroup || phone.isNotBlank())) {
                     val newMessage = Message(
                         label = label,
-                        phoneNumber = phone,
-                        message = message
+                        phoneNumber = if (isGroup) "" else phone,
+                        message = message,
+                        isGroup = isGroup
                     )
                     messageStore.addMessage(newMessage)
                     refreshList()

@@ -6,5 +6,6 @@ data class Message(
     val id: String = UUID.randomUUID().toString(),
     val label: String,
     val phoneNumber: String,
-    val message: String
+    val message: String,
+    val isGroup: Boolean = false
 )

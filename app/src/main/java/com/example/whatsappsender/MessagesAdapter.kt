@@ -20,7 +20,7 @@ class MessagesAdapter(
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
         holder.binding.messageLabel.text = message.label
-        holder.binding.messagePhone.text = message.phoneNumber
+        holder.binding.messagePhone.text = if (message.isGroup) "Group Message (Manual Select)" else message.phoneNumber
         holder.binding.deleteButton.setOnClickListener { onDeleteClick(message) }
     }
 
